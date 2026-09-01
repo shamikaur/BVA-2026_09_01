@@ -131,6 +131,8 @@ section.tight { padding: 54px 0; }
 .hero .eyebrow { margin-bottom: 14px; }
 .hero h1 { max-width: 760px; }
 .hero p.lede { margin-top: 18px; margin-bottom: 30px; }
+.fit-line { font-size: 14px; color: var(--muted); margin: 22px 0 0; }
+.fit-line a { font-weight: 700; }
 
 /* ---------- cards ---------- */
 .card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 32px; }
@@ -150,6 +152,8 @@ section.tight { padding: 54px 0; }
 .diagram-caption { text-align: center; font-size: 13.5px; color: var(--muted); margin-top: 10px; }
 
 .split { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 48px; align-items: start; }
+.service-text { max-width: 700px; }
+.diagram-wide { margin-top: 6px; }
 
 ul.plain { margin: 0 0 18px; padding-left: 22px; }
 ul.plain li { margin-bottom: 9px; color: var(--slate); }
