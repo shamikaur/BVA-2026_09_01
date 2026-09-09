@@ -45,7 +45,7 @@
   .nav-cta{padding:9px 18px;border-radius:8px;font-weight:600;font-size:14px;opacity:1 !important;white-space:nowrap;transition:background .15s ease, border-color .15s ease;}
   .nav-cta-primary{background:var(--blue);color:var(--white) !important;border:1px solid var(--blue);}
   .nav-cta-primary:hover{background:var(--blue-deep);}
-  .nav-cta-secondary{background:var(--white);color:var(--blue) !important;border:1px solid var(--line);}
+  .nav-cta-secondary{background:var(--white);color:var(--blue) !important;border:1px solid var(--line);padding:9px 26px;}
   .nav-cta-secondary:hover{border-color:var(--blue);}
 
   /* ---------- BUTTONS ---------- */
@@ -80,7 +80,7 @@
   .form-row label{font-size:12.5px;font-weight:700;color:var(--muted);letter-spacing:0.01em;}
   .form-row input,.form-row textarea{font-family:var(--font-body);font-size:15px;color:var(--slate);border:1px solid var(--line);border-radius:8px;padding:12px 13px;background:var(--white);outline:none;resize:vertical;transition:border-color .15s ease, box-shadow .15s ease;width:100%;}
   .form-row input:focus,.form-row textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(10,46,138,0.14);}
-  .form-row input[aria-invalid="true"]{border-color:#B3261E;}
+  .form-row input[aria-invalid="true"],.form-row textarea[aria-invalid="true"]{border-color:#B3261E;}
   .field-error{font-size:12.5px;color:#B3261E;font-weight:600;min-height:16px;}
   .lead-ctas{display:flex;flex-direction:column;gap:10px;margin-top:6px;}
   .lead-ctas .btn{width:100%;}
@@ -129,15 +129,6 @@
   .next-step-card p{color:var(--muted);font-size:14.5px;line-height:1.65;}
   .next-step-card .contact-link{display:inline-block;margin-top:16px;font-size:14.5px;font-weight:700;color:var(--blue);}
 
-  /* ---------- CONTACT BAND ---------- */
-  .contact-section{background:var(--blue);color:var(--white);border-radius:24px;margin:0 32px;padding:56px;text-align:center;}
-  .contact-section .container{max-width:640px;}
-  .contact-section h2{color:var(--white);font-size:26px;font-weight:700;line-height:1.3;}
-  .contact-section .eyebrow{color:#B9CBFF;}
-  .contact-section p.lede{margin-top:14px;color:#CBD7F7;font-size:15px;line-height:1.6;}
-  .contact-section .btn-primary{background:var(--white);color:var(--blue);margin-top:24px;}
-  .contact-section .btn-primary:hover{background:#E9EEFC;}
-
   /* ---------- FOOTER ---------- */
   footer{padding:40px 32px 48px;text-align:center;}
   footer .tagline{font-size:14px;color:var(--muted);}
@@ -157,7 +148,6 @@
     .hero h1{font-size:32px;}
     nav.links{display:none;}
     .test-shell{padding:28px 22px 24px;border-radius:14px;}
-    .contact-section{padding:40px 26px;margin:0 16px;border-radius:18px;}
   }
   @media (prefers-reduced-motion: reduce){
     html{scroll-behavior:auto;}
@@ -245,10 +235,12 @@
           <div class="form-row">
             <label for="q1Receives">Who receives it?</label>
             <textarea id="q1Receives" name="q1Receives" rows="2"></textarea>
+            <div class="field-error" id="q1Receives-error"></div>
           </div>
           <div class="form-row">
             <label for="q1Uses">Who actively uses it in meetings or decisions?</label>
             <textarea id="q1Uses" name="q1Uses" rows="2"></textarea>
+            <div class="field-error" id="q1Uses-error"></div>
           </div>
         </div>
 
@@ -258,6 +250,7 @@
           <p class="q-help">Answer in one or two sentences.</p>
           <div class="form-row">
             <textarea id="q2Purpose" name="q2Purpose" rows="3"></textarea>
+            <div class="field-error" id="q2Purpose-error"></div>
           </div>
         </div>
 
@@ -267,6 +260,7 @@
           <p class="q-help">Think about the recurring measures leadership is expected to pay attention to.</p>
           <div class="form-row">
             <textarea id="q3Kpis" name="q3Kpis" rows="4"></textarea>
+            <div class="field-error" id="q3Kpis-error"></div>
           </div>
         </div>
 
@@ -276,6 +270,7 @@
           <p class="q-help">Think about the last few times this report was actually used.</p>
           <div class="form-row">
             <textarea id="q4Influencing" name="q4Influencing" rows="4"></textarea>
+            <div class="field-error" id="q4Influencing-error"></div>
           </div>
         </div>
 
@@ -285,6 +280,7 @@
           <p class="q-help">This tends to reveal which measures are actually doing useful work.</p>
           <div class="form-row">
             <textarea id="q5Essential" name="q5Essential" rows="4"></textarea>
+            <div class="field-error" id="q5Essential-error"></div>
           </div>
         </div>
 
@@ -349,20 +345,8 @@
         <span class="tag">Want to go deeper?</span>
         <h3>The 30-Minute Test</h3>
         <p>A paid, self-guided assessment that takes the next step by examining how a report performs in an actual leadership meeting across five dimensions: Purpose, Trust, Focus, Context, and Decision Readiness.</p>
-        <a class="contact-link" href="mailto:support@boardviewanalytics.com">Contact us at support@boardviewanalytics.com &rarr;</a>
+        <a class="contact-link" href="mailto:support@boardviewanalytics.com?subject=30-Minute%20Report%20Test">Contact us at support@boardviewanalytics.com &rarr;</a>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= CONTACT BAND ================= -->
-<section id="contact-band">
-  <div class="contact-section">
-    <div class="container">
-      <span class="eyebrow">Questions?</span>
-      <h2>Talk to Boardview Analytics about your reporting</h2>
-      <p class="lede">Reach out any time at support@boardviewanalytics.com, or start a conversation below.</p>
-      <a href="mailto:support@boardviewanalytics.com?subject=5-Minute%20Executive%20Report%20Test" class="btn btn-primary">Email Boardview Analytics</a>
     </div>
   </div>
 </section>
@@ -530,6 +514,62 @@
   }
 
   /* =====================================================================
+     QUESTION VALIDATION — only the five core questions (steps 1-5) are
+     required; the "What Did You Notice?" reflections (step 6) and the
+     final "one thing to improve" reflection (step 7) stay optional.
+     ===================================================================== */
+  var REQUIRED_STEP_FIELDS = {
+    1: ["q1Receives", "q1Uses"],
+    2: ["q2Purpose"],
+    3: ["q3Kpis"],
+    4: ["q4Influencing"],
+    5: ["q5Essential"]
+  };
+
+  function clearFieldError(id){
+    var field = document.getElementById(id);
+    var errEl = document.getElementById(id + "-error");
+    if(errEl) errEl.textContent = "";
+    if(field) field.removeAttribute("aria-invalid");
+  }
+
+  function markFieldError(id){
+    var field = document.getElementById(id);
+    var errEl = document.getElementById(id + "-error");
+    if(errEl) errEl.textContent = "Please answer this question to continue.";
+    if(field) field.setAttribute("aria-invalid", "true");
+  }
+
+  // Validates one step's required fields. Does not disable Next — it just
+  // keeps the user on the step and points at what still needs an answer.
+  function validateQuestionStep(step){
+    var ids = REQUIRED_STEP_FIELDS[step];
+    if(!ids) return true;
+    var valid = true;
+    var firstInvalidField = null;
+    ids.forEach(function(id){
+      clearFieldError(id);
+      if(!val(id)){
+        markFieldError(id);
+        valid = false;
+        if(!firstInvalidField) firstInvalidField = document.getElementById(id);
+      }
+    });
+    if(firstInvalidField) firstInvalidField.focus();
+    return valid;
+  }
+
+  // Used as a final safety net on Finish — walks steps 1-5 in order and
+  // returns the first one still missing a required answer, or null.
+  function findFirstInvalidRequiredStep(){
+    var steps = [1, 2, 3, 4, 5];
+    for(var i = 0; i < steps.length; i++){
+      if(!validateQuestionStep(steps[i])) return steps[i];
+    }
+    return null;
+  }
+
+  /* =====================================================================
      LEAD CAPTURE (both paths share this handler)
      ===================================================================== */
   var pendingPath = null;
@@ -682,12 +722,20 @@
   }
 
   var saveTimer = null;
-  testForm.addEventListener("input", function(){
+  testForm.addEventListener("input", function(e){
     clearTimeout(saveTimer);
     saveTimer = setTimeout(persistProgress, 300);
+    var target = e.target;
+    if(target && target.id && val(target.id)){
+      clearFieldError(target.id);
+    }
   });
 
   nextBtn.addEventListener("click", function(){
+    if(!validateQuestionStep(currentStep)){
+      persistProgress();
+      return;
+    }
     persistProgress();
     if(currentStep < TOTAL_STEPS){
       currentStep += 1;
@@ -712,6 +760,16 @@
   testForm.addEventListener("submit", function(e){
     e.preventDefault();
     persistProgress();
+
+    var invalidStep = findFirstInvalidRequiredStep();
+    if(invalidStep){
+      currentStep = invalidStep;
+      renderStep();
+      finishStatus.textContent = "Please answer the required questions before finishing.";
+      finishStatus.className = "finish-status error";
+      return;
+    }
+
     setFinishBusy(true);
     finishStatus.textContent = "Saving…";
     finishStatus.className = "finish-status";
@@ -829,7 +887,15 @@
           var canvas = document.createElement("canvas");
           canvas.width = img.naturalWidth;
           canvas.height = img.naturalHeight;
-          canvas.getContext("2d").drawImage(img, 0, 0);
+          var ctx = canvas.getContext("2d");
+          // logo.png has a transparent background. toDataURL("image/jpeg")
+          // has no alpha channel, so transparent pixels default to black —
+          // that showed up as a black rectangle behind the logo in the PDF.
+          // Painting white first composites the logo correctly before the
+          // (opaque) JPEG export.
+          ctx.fillStyle = "#FFFFFF";
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.drawImage(img, 0, 0);
           resolve(canvas.toDataURL("image/jpeg", 0.92));
         } catch(e){ resolve(null); }
       };
