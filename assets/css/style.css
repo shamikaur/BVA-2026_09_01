@@ -225,7 +225,11 @@ ul.plain.muted li { color: var(--muted); }
   .split { grid-template-columns: 1fr; }
   .principle-grid { grid-template-columns: 1fr; }
 }
-@media (max-width: 760px) {
+/* The header now carries two nav CTAs instead of one, so it needs to drop
+   into the mobile dropdown a bit earlier than the original single-CTA
+   design did — otherwise the extra button crowds the 760–1040px range.
+   Everything else (section/footer spacing) still switches at 760px. */
+@media (max-width: 1040px) {
   .nav-links { display: none; }
   .nav-toggle { display: block; }
   .header-cta { display: none; }
@@ -236,6 +240,8 @@ ul.plain.muted li { color: var(--muted); }
   }
   .nav-links li.nav-cta-item { display: block; width: 100%; margin-top: 4px; }
   .nav-links li.nav-cta-item a { display: block; text-align: center; }
+}
+@media (max-width: 760px) {
   section { padding: 54px 0; }
   .hero { padding: 44px 0 40px; }
   .site-footer .wrap { flex-direction: column; align-items: flex-start; }
