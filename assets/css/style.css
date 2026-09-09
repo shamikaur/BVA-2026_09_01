@@ -116,14 +116,24 @@ nav[aria-label="Primary"] { flex: 1; min-width: 0; }
 .nav-links a:hover, .nav-links a[aria-current="page"] {
   color: var(--blue); text-decoration: none; border-bottom-color: var(--blue);
 }
+/* These two CTAs must look identical to the working ones on
+   5-minute-test.html. That page never uses the shared .btn class — it has
+   its own local .nav-cta rule (8px radius, 600 weight, 14px type). Here on
+   the shared site, .btn's global border-radius:999px (pill) and
+   font-weight:700 were leaking onto these two buttons because nothing
+   overrode them, which is the actual root cause of the mismatch — not a
+   caching issue. Override every property that differs so these render the
+   same as 5-minute-test.html's buttons. */
 .nav-links li.nav-cta-item a {
-  padding: 10px 20px; border-bottom: none; display: inline-block; white-space: nowrap;
+  padding: 9px 18px; border-radius: 8px; border-bottom: none;
+  display: inline-block; white-space: nowrap;
+  font-weight: 600; font-size: 14px;
 }
 .nav-links li.nav-cta-item a:hover { border-bottom: none; }
 /* Start a Conversation gets extra horizontal room so the label doesn't
    feel cramped; height stays identical to the primary CTA (same vertical
    padding, same border width). */
-.nav-links li.nav-cta-item a.btn-secondary { padding: 10px 28px; }
+.nav-links li.nav-cta-item a.btn-secondary { padding: 9px 26px; }
 /* Guarantee white text on the primary CTA in every state — generic
    .nav-links a rules (and their :hover/[aria-current] color) must never
    win here. */
