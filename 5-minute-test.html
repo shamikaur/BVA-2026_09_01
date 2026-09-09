@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The 5-Minute Executive Report Test&#8482; | Boardview Analytics</title>
+<meta name="description" content="Spend five minutes with a report you already produce and come away with a clearer view of how well it is supporting the people who rely on it. Free download.">
+<meta property="og:title" content="The 5-Minute Executive Report Test&#8482;">
+<meta property="og:description" content="Five minutes. One report. Greater clarity about what matters.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://boardviewanalytics.com/5-minute-test.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  :root{
+    --blue:#0A2E8A;
+    --blue-deep:#08246b;
+    --slate:#17202F;
+    --muted:#5C697A;
+    --bg-soft:#F5F8FC;
+    --line:#D9E2EE;
+    --white:#FFFFFF;
+    --font-display: "Bahnschrift","Segoe UI Semibold","Inter",Arial,sans-serif;
+    --font-body: "Avenir Next LT Pro","Inter", Arial,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:var(--font-body);color:var(--slate);background:var(--white);-webkit-font-smoothing:antialiased;line-height:1.55;}
+  h1,h2,h3{font-family:var(--font-display);letter-spacing:-0.01em;margin:0;color:var(--slate);}
+  p{margin:0;}
+  a{color:inherit;text-decoration:none;}
+  .container{max-width:1160px;margin:0 auto;padding:0 32px;}
+  .eyebrow{font-family:var(--font-body);font-size:12px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--blue);display:inline-block;margin-bottom:14px;}
+
+  /* ---------- NAV ---------- */
+  header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,0.92);backdrop-filter:saturate(180%) blur(10px);border-bottom:1px solid var(--line);}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:14px 32px;max-width:1160px;margin:0 auto;flex-wrap:wrap;gap:12px;}
+  .logo-wrap{display:flex;align-items:center;gap:10px;text-decoration:none;cursor:pointer;}
+  .logo-wrap img{height:44px;width:auto;display:block;}
+  nav.links{display:flex;align-items:center;gap:28px;flex-wrap:wrap;}
+  nav.links a{font-size:14.5px;font-weight:600;color:var(--slate);opacity:0.82;transition:opacity .15s ease;}
+  nav.links a:hover{opacity:1;color:var(--blue);}
+  .nav-cta{background:var(--blue);color:var(--white) !important;padding:10px 20px;border-radius:8px;font-weight:600;font-size:14px;opacity:1 !important;transition:background .15s ease;}
+  .nav-cta:hover{background:var(--blue-deep);}
+
+  /* ---------- BUTTONS ---------- */
+  .btn{display:inline-flex;align-items:center;justify-content:center;padding:14px 26px;border-radius:8px;font-weight:600;font-size:15px;cursor:pointer;border:1px solid transparent;transition:all .15s ease;text-align:center;}
+  .btn-primary{background:var(--blue);color:var(--white);}
+  .btn-primary:hover:not(:disabled){background:var(--blue-deep);}
+  .btn-secondary{background:var(--white);color:var(--blue);border-color:var(--line);}
+  .btn-secondary:hover:not(:disabled){border-color:var(--blue);}
+  .btn:disabled{opacity:0.6;cursor:not-allowed;}
+  .btn-link{display:inline-block;font-size:14.5px;font-weight:700;color:var(--blue);cursor:pointer;background:none;border:none;padding:0;}
+  .btn-link:hover{text-decoration:underline;}
+
+  /* ---------- HERO ---------- */
+  .hero{padding:72px 0 88px;}
+  .hero-grid{display:grid;grid-template-columns:1.05fr 0.95fr;gap:56px;align-items:start;}
+  .hero h1{font-size:40px;line-height:1.15;font-weight:700;}
+  .hero p.lede{margin-top:20px;font-size:17px;color:var(--muted);line-height:1.65;}
+  .hero p.emphasis{margin-top:18px;font-size:16.5px;font-weight:700;color:var(--slate);}
+  .hero .free-note{margin-top:18px;font-size:13.5px;font-weight:700;color:var(--blue);letter-spacing:0.02em;}
+  .how-it-works{margin-top:34px;border:1px solid var(--line);border-radius:14px;padding:22px 24px;background:var(--bg-soft);}
+  .how-it-works h3{font-size:13px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);font-weight:700;margin-bottom:14px;}
+  .how-step{display:flex;gap:12px;padding:10px 0;}
+  .how-step + .how-step{border-top:1px solid var(--line);}
+  .how-step .num{flex:0 0 26px;height:26px;border-radius:50%;background:var(--blue);color:var(--white);font-size:12.5px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+  .how-step p{font-size:14px;color:var(--slate);line-height:1.5;padding-top:3px;}
+
+  /* ---------- LEAD CARD ---------- */
+  .lead-card{border:1px solid var(--line);border-radius:18px;padding:32px;background:var(--white);box-shadow:0 14px 34px rgba(10,46,138,0.08);}
+  .lead-card h2{font-size:21px;font-weight:700;margin-bottom:6px;}
+  .lead-card .sub{font-size:14px;color:var(--muted);margin-bottom:22px;}
+  .form-row{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;}
+  .form-row label{font-size:12.5px;font-weight:700;color:var(--muted);letter-spacing:0.01em;}
+  .form-row input,.form-row textarea{font-family:var(--font-body);font-size:15px;color:var(--slate);border:1px solid var(--line);border-radius:8px;padding:12px 13px;background:var(--white);outline:none;resize:vertical;transition:border-color .15s ease, box-shadow .15s ease;width:100%;}
+  .form-row input:focus,.form-row textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(10,46,138,0.14);}
+  .form-row input[aria-invalid="true"]{border-color:#B3261E;}
+  .field-error{font-size:12.5px;color:#B3261E;font-weight:600;min-height:16px;}
+  .lead-ctas{display:flex;flex-direction:column;gap:10px;margin-top:6px;}
+  .lead-ctas .btn{width:100%;}
+  .privacy-note{margin-top:16px;font-size:12.5px;color:var(--muted);line-height:1.55;}
+  .lead-status{margin-top:12px;font-size:13.5px;font-weight:600;min-height:18px;}
+  .lead-status.success{color:#1E7A3C;}
+  .lead-status.error{color:#B3261E;}
+
+  /* ---------- SECTION GENERIC ---------- */
+  section{padding:0;}
+  .bg-soft{background:var(--bg-soft);}
+
+  /* ---------- WIZARD ---------- */
+  #test-app{padding:56px 0 88px;}
+  .test-shell{max-width:720px;margin:0 auto;background:var(--white);border:1px solid var(--line);border-radius:18px;padding:40px 40px 32px;}
+  .test-progress-track{height:6px;background:var(--line);border-radius:99px;overflow:hidden;margin-bottom:8px;}
+  .test-progress-fill{height:100%;background:var(--blue);border-radius:99px;transition:width .25s ease;}
+  .test-progress-label{font-size:12.5px;color:var(--muted);font-weight:600;margin-bottom:28px;}
+  .test-step{display:none;}
+  .test-step.active{display:block;}
+  .q-eyebrow{font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--blue);margin-bottom:10px;}
+  .test-step h3{font-size:22px;font-weight:700;line-height:1.35;margin-bottom:8px;}
+  .q-help{font-size:14px;color:var(--muted);margin-bottom:16px;line-height:1.55;}
+  .q-note{font-size:13px;color:var(--blue);font-weight:600;margin-top:-8px;margin-bottom:16px;}
+  .gap-block{margin-bottom:22px;}
+  .gap-label{font-size:14.5px;font-weight:700;color:var(--slate);margin-bottom:6px;display:block;}
+  .gap-help{font-size:13px;color:var(--muted);margin-bottom:8px;}
+  .callout{background:var(--bg-soft);border:1px solid var(--line);border-radius:10px;padding:16px 18px;font-size:13.5px;color:var(--slate);line-height:1.6;margin-top:6px;}
+  .callout strong{display:block;margin-bottom:4px;color:var(--blue);}
+  .test-nav{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:28px;padding-top:22px;border-top:1px solid var(--line);flex-wrap:wrap;}
+  .save-hint{font-size:12.5px;color:var(--muted);flex:1;text-align:center;min-width:160px;}
+  .finish-status{width:100%;font-size:13.5px;font-weight:600;text-align:center;margin-top:14px;min-height:18px;}
+  .finish-status.error{color:#B3261E;}
+
+  /* ---------- COMPLETE PANEL ---------- */
+  #complete-panel{padding:64px 0 88px;}
+  .complete-shell{max-width:640px;margin:0 auto;text-align:center;}
+  .complete-shell h2{font-size:30px;font-weight:700;}
+  .complete-shell .save-note{margin-top:14px;font-size:15px;color:#1E7A3C;font-weight:600;}
+  .complete-shell .sub{margin-top:14px;font-size:15.5px;color:var(--muted);line-height:1.6;}
+  .complete-ctas{margin-top:28px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+  .start-over{margin-top:16px;}
+  .next-step-card{margin-top:48px;border:1px solid var(--line);border-radius:16px;padding:32px;text-align:left;background:var(--bg-soft);}
+  .next-step-card .tag{font-size:11.5px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--blue);display:block;margin-bottom:10px;}
+  .next-step-card h3{font-size:19px;font-weight:700;margin-bottom:10px;}
+  .next-step-card p{color:var(--muted);font-size:14.5px;line-height:1.65;}
+  .next-step-card .contact-link{display:inline-block;margin-top:16px;font-size:14.5px;font-weight:700;color:var(--blue);}
+
+  /* ---------- CONTACT BAND ---------- */
+  .contact-section{background:var(--blue);color:var(--white);border-radius:24px;margin:0 32px;padding:56px;text-align:center;}
+  .contact-section .container{max-width:640px;}
+  .contact-section h2{color:var(--white);font-size:26px;font-weight:700;line-height:1.3;}
+  .contact-section .eyebrow{color:#B9CBFF;}
+  .contact-section p.lede{margin-top:14px;color:#CBD7F7;font-size:15px;line-height:1.6;}
+  .contact-section .btn-primary{background:var(--white);color:var(--blue);margin-top:24px;}
+  .contact-section .btn-primary:hover{background:#E9EEFC;}
+
+  /* ---------- FOOTER ---------- */
+  footer{padding:40px 32px 48px;text-align:center;}
+  footer .tagline{font-size:14px;color:var(--muted);}
+  footer .copyright{font-size:13px;color:var(--muted);margin-top:8px;opacity:0.8;}
+  footer a.email{color:var(--blue);font-weight:600;}
+
+  .visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:900px){
+    .hero-grid{grid-template-columns:1fr;}
+    .hero h1{font-size:32px;}
+    nav.links{display:none;}
+    .test-shell{padding:28px 22px 24px;border-radius:14px;}
+    .contact-section{padding:40px 26px;margin:0 16px;border-radius:18px;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+  }
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="nav-inner">
+    <a href="index.html" class="logo-wrap" aria-label="Boardview Analytics — home">
+      <img src="assets/img/logo.png" alt="Boardview Analytics">
+    </a>
+    <nav class="links">
+      <a href="index.html">Home</a>
+      <a href="services.html">Services</a>
+      <a href="approach.html">Approach</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="contact.html" class="nav-cta">Start a Conversation</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ================= HERO + LEAD GATE ================= -->
+<section class="hero" id="hero-lead-area">
+  <div class="container hero-grid">
+    <div>
+      <span class="eyebrow">Free Download</span>
+      <h1>Could your executive report be working harder for leadership?</h1>
+      <p class="lede">Spend five minutes with a report you already produce and come away with a clearer view of how well it is supporting the people who rely on it. The 5-Minute Executive Report Test&#8482; is a quick way to step outside the monthly reporting routine, look at the report with fresh eyes, and identify where it may deserve a closer look.</p>
+      <p class="emphasis">Five minutes. One report. Greater clarity about what matters.</p>
+      <p class="free-note">Free download — no cost, no obligation.</p>
+
+      <div class="how-it-works">
+        <h3>How It Works</h3>
+        <div class="how-step"><span class="num">1</span><p>Answer a few quick questions about one report you already produce.</p></div>
+        <div class="how-step"><span class="num">2</span><p>Notice where what the report contains and how leadership actually uses it may not line up.</p></div>
+        <div class="how-step"><span class="num">3</span><p>Walk away with your own completed copy — nothing is scored or graded.</p></div>
+      </div>
+    </div>
+
+    <div class="lead-card" id="lead-gate">
+      <h2>Get Started</h2>
+      <p class="sub">Enter your name and work email to begin.</p>
+      <form id="lead-form" novalidate>
+        <div class="form-row">
+          <label for="lf-first-name">First Name</label>
+          <input type="text" id="lf-first-name" name="firstName" autocomplete="given-name" required>
+          <div class="field-error" id="lf-first-name-error"></div>
+        </div>
+        <div class="form-row">
+          <label for="lf-email">Work Email</label>
+          <input type="email" id="lf-email" name="workEmail" autocomplete="email" required>
+          <div class="field-error" id="lf-email-error"></div>
+        </div>
+
+        <div class="lead-ctas">
+          <button type="submit" class="btn btn-primary" id="btn-launch">Launch the 5-Minute Executive Report Test&#8482;</button>
+          <button type="submit" class="btn btn-secondary" id="btn-download">Download the blank test and fill it offline</button>
+        </div>
+
+        <p class="privacy-note">We&rsquo;ll use your information to provide the test and communicate with you about Boardview Analytics.</p>
+        <p class="lead-status" id="lead-status" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ================= INTERACTIVE TEST ================= -->
+<section id="test-app" class="bg-soft" hidden>
+  <div class="container">
+    <div class="test-shell">
+      <div class="test-progress-track"><div class="test-progress-fill" id="progress-fill"></div></div>
+      <p class="test-progress-label" id="progress-label">Step 1 of 7</p>
+
+      <form id="test-form" novalidate>
+
+        <div class="test-step" data-step="1">
+          <span class="q-eyebrow">Question 1</span>
+          <h3>Who actually uses this report?</h3>
+          <p class="q-help">Distribution is not the same as use.</p>
+          <div class="form-row">
+            <label for="q1Receives">Who receives it?</label>
+            <textarea id="q1Receives" name="q1Receives" rows="2"></textarea>
+          </div>
+          <div class="form-row">
+            <label for="q1Uses">Who actively uses it in meetings or decisions?</label>
+            <textarea id="q1Uses" name="q1Uses" rows="2"></textarea>
+          </div>
+        </div>
+
+        <div class="test-step" data-step="2">
+          <span class="q-eyebrow">Question 2</span>
+          <h3>What is this report supposed to help them understand or decide?</h3>
+          <p class="q-help">Answer in one or two sentences.</p>
+          <div class="form-row">
+            <textarea id="q2Purpose" name="q2Purpose" rows="3"></textarea>
+          </div>
+        </div>
+
+        <div class="test-step" data-step="3">
+          <span class="q-eyebrow">Question 3</span>
+          <h3>What KPIs or measures does the report contain?</h3>
+          <p class="q-help">Think about the recurring measures leadership is expected to pay attention to.</p>
+          <div class="form-row">
+            <textarea id="q3Kpis" name="q3Kpis" rows="4"></textarea>
+          </div>
+        </div>
+
+        <div class="test-step" data-step="4">
+          <span class="q-eyebrow">Question 4</span>
+          <h3>Which KPIs actually influence a discussion, question, action, or decision?</h3>
+          <p class="q-help">Think about the last few times this report was actually used.</p>
+          <div class="form-row">
+            <textarea id="q4Influencing" name="q4Influencing" rows="4"></textarea>
+          </div>
+        </div>
+
+        <div class="test-step" data-step="5">
+          <span class="q-eyebrow">Question 5</span>
+          <h3>If you removed half the KPIs tomorrow, which would leadership ask you to restore?</h3>
+          <p class="q-help">This tends to reveal which measures are actually doing useful work.</p>
+          <div class="form-row">
+            <textarea id="q5Essential" name="q5Essential" rows="4"></textarea>
+          </div>
+        </div>
+
+        <div class="test-step" data-step="6">
+          <span class="q-eyebrow">What Did You Notice?</span>
+          <h3>A few quick reflections</h3>
+          <div class="gap-block">
+            <label class="gap-label" for="gapAudience">Audience Gap</label>
+            <p class="gap-help">Are there people receiving the report who do not actively use it?</p>
+            <textarea id="gapAudience" name="gapAudience" rows="2"></textarea>
+          </div>
+          <div class="gap-block">
+            <label class="gap-label" for="gapPurpose">Purpose Gap</label>
+            <p class="gap-help">Can you clearly state what the report helps leadership understand or decide?</p>
+            <textarea id="gapPurpose" name="gapPurpose" rows="2"></textarea>
+          </div>
+          <div class="gap-block">
+            <label class="gap-label" for="gapAttention">Attention Gap</label>
+            <p class="gap-help">Compare the KPIs you listed in Question 3 with the ones you identified in Questions 4 and 5.</p>
+            <textarea id="gapAttention" name="gapAttention" rows="2"></textarea>
+          </div>
+        </div>
+
+        <div class="test-step" data-step="7">
+          <span class="q-eyebrow">Final Reflection</span>
+          <h3>If you could improve just one thing about this report, what would it be?</h3>
+          <p class="q-help">Do not change anything yet.</p>
+          <div class="form-row">
+            <textarea id="oneThingToImprove" name="oneThingToImprove" rows="3"></textarea>
+          </div>
+          <div class="callout">
+            <strong>Before you go</strong>
+            The purpose of this five-minute test is not to prove that your report is good or bad. It is to notice whether what you are producing matches how leadership actually uses it. If the answers surprised you, the report may deserve a closer look.
+          </div>
+        </div>
+
+        <div class="test-nav">
+          <button type="button" class="btn btn-secondary" id="btn-back">Back</button>
+          <span class="save-hint">Your progress is saved on this device as you go.</span>
+          <button type="button" class="btn btn-primary" id="btn-next">Next</button>
+          <button type="submit" class="btn btn-primary" id="btn-finish" hidden>Finish</button>
+          <p class="finish-status" id="finish-status" role="status" aria-live="polite"></p>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ================= COMPLETE PANEL ================= -->
+<section id="complete-panel" hidden>
+  <div class="container">
+    <div class="complete-shell">
+      <h2>You've completed the test.</h2>
+      <p class="save-note">Your completed test has been saved.</p>
+      <p class="sub">Download a copy for your own reference below — it is not a score or a rating, just a record of what you noticed.</p>
+      <div class="complete-ctas">
+        <button class="btn btn-primary" id="btn-download-completed">Download My Completed Test</button>
+      </div>
+      <p class="start-over"><button type="button" class="btn-link" id="btn-start-over">Start a new test</button></p>
+
+      <div class="next-step-card">
+        <span class="tag">Want to go deeper?</span>
+        <h3>The 30-Minute Test</h3>
+        <p>A paid, self-guided assessment that takes the next step by examining how a report performs in an actual leadership meeting across five dimensions: Purpose, Trust, Focus, Context, and Decision Readiness.</p>
+        <a class="contact-link" href="mailto:support@boardviewanalytics.com">Contact us at support@boardviewanalytics.com &rarr;</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT BAND ================= -->
+<section id="contact-band">
+  <div class="contact-section">
+    <div class="container">
+      <span class="eyebrow">Questions?</span>
+      <h2>Talk to Boardview Analytics about your reporting</h2>
+      <p class="lede">Reach out any time at support@boardviewanalytics.com, or start a conversation below.</p>
+      <a href="contact.html" class="btn btn-primary">Get in Touch</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p class="tagline">Helping leadership teams build an Executive Frame&trade; they can trust.</p>
+  <p class="copyright">&copy; 2026 Shami Kaur LLC dba Boardview Analytics. All rights reserved. &middot; <a class="email" href="mailto:support@boardviewanalytics.com">support@boardviewanalytics.com</a></p>
+  <p class="copyright" style="margin-top:6px;">The Executive Frame&trade;, The 5-Minute Executive Report Test&trade;, and related marks are trademarks of Boardview Analytics.</p>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* =====================================================================
+     CONFIG
+     ===================================================================== */
+  var WORKER_URL = "https://boardview-5-minute-test.shami-d27.workers.dev/";
+  var BLANK_PDF_PATH = "5-minute-executive-report-test-blank.pdf";
+  var LOGO_PATH = "assets/img/logo.png";
+  var STORAGE_KEY = "bva5minTest_attempt_v1";
+  var PENDING_LEAD_KEY = "bva5minTest_pendingLead_v1";
+  var TOTAL_STEPS = 7;
+  var QUESTION_IDS = ["q1Receives","q1Uses","q2Purpose","q3Kpis","q4Influencing",
+    "q5Essential","gapAudience","gapPurpose","gapAttention","oneThingToImprove"];
+
+  /* =====================================================================
+     ATTRIBUTION — captured once, at page load
+     ===================================================================== */
+  function captureAttribution(){
+    var params = new URLSearchParams(window.location.search);
+    return {
+      source: params.get("source") || "Website",
+      utmSource: params.get("utm_source") || "",
+      utmMedium: params.get("utm_medium") || "",
+      utmCampaign: params.get("utm_campaign") || "",
+      referringUrl: document.referrer || ""
+    };
+  }
+  var attribution = captureAttribution();
+
+  /* =====================================================================
+     LOCAL PERSISTENCE (Interactive attempts only)
+     ===================================================================== */
+  function loadAttempt(){
+    try{
+      var raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch(e){ return null; }
+  }
+  function saveAttempt(attempt){
+    try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(attempt)); } catch(e){}
+  }
+  function clearStoredAttempt(){
+    try{ localStorage.removeItem(STORAGE_KEY); } catch(e){}
+  }
+
+  function loadPendingLeads(){
+    try{
+      var raw = localStorage.getItem(PENDING_LEAD_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch(e){ return {}; }
+  }
+  function savePendingLeads(){
+    try{ localStorage.setItem(PENDING_LEAD_KEY, JSON.stringify(pendingLeadAttempts)); } catch(e){}
+  }
+  function clearPendingLead(path){
+    delete pendingLeadAttempts[path];
+    savePendingLeads();
+  }
+  function clearAllPendingLeads(){
+    pendingLeadAttempts = {};
+    try{ localStorage.removeItem(PENDING_LEAD_KEY); } catch(e){}
+  }
+
+  /* =====================================================================
+     BACKEND — single request helper, no secrets, no PII in logs
+     ===================================================================== */
+  function postToWorker(payload){
+    return fetch(WORKER_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    }).then(function(res){
+      if(!res.ok) throw new Error("request failed");
+      return res.json();
+    }).then(function(data){
+      if(!data || data.ok !== true) throw new Error("request not acknowledged");
+      return data; // { ok, itemId, duplicate? }
+    }).catch(function(err){
+      console.warn("BVA 5-Minute Test: a save request did not complete.");
+      throw err;
+    });
+  }
+
+  /* =====================================================================
+     ELEMENTS
+     ===================================================================== */
+  var heroLeadArea = document.getElementById("hero-lead-area");
+  var testApp = document.getElementById("test-app");
+  var completePanel = document.getElementById("complete-panel");
+  var leadForm = document.getElementById("lead-form");
+  var leadStatus = document.getElementById("lead-status");
+  var launchBtn = document.getElementById("btn-launch");
+  var downloadBtn = document.getElementById("btn-download");
+  var testForm = document.getElementById("test-form");
+  var backBtn = document.getElementById("btn-back");
+  var nextBtn = document.getElementById("btn-next");
+  var finishBtn = document.getElementById("btn-finish");
+  var finishStatus = document.getElementById("finish-status");
+  var progressFill = document.getElementById("progress-fill");
+  var progressLabel = document.getElementById("progress-label");
+
+  var currentAttempt = null;              // the in-progress or completed Interactive attempt
+  var pendingLeadAttempts = loadPendingLeads(); // { Interactive: {...}, "Blank PDF Download": {...} } — in-flight/retryable, persisted before the first POST
+  var currentStep = 1;
+
+  /* =====================================================================
+     VALIDATION
+     ===================================================================== */
+  function isValidEmail(value){
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+  }
+  function validateLeadForm(){
+    var firstNameEl = document.getElementById("lf-first-name");
+    var emailEl = document.getElementById("lf-email");
+    var firstNameErr = document.getElementById("lf-first-name-error");
+    var emailErr = document.getElementById("lf-email-error");
+    var valid = true;
+
+    firstNameErr.textContent = "";
+    emailErr.textContent = "";
+    firstNameEl.removeAttribute("aria-invalid");
+    emailEl.removeAttribute("aria-invalid");
+
+    if(!firstNameEl.value.trim()){
+      firstNameErr.textContent = "Please enter your first name.";
+      firstNameEl.setAttribute("aria-invalid", "true");
+      valid = false;
+    }
+    if(!emailEl.value.trim() || !isValidEmail(emailEl.value.trim())){
+      emailErr.textContent = "Please enter a valid work email address.";
+      emailEl.setAttribute("aria-invalid", "true");
+      valid = false;
+    }
+    return valid;
+  }
+  function val(id){
+    var el = document.getElementById(id);
+    return el ? el.value.trim() : "";
+  }
+
+  /* =====================================================================
+     LEAD CAPTURE (both paths share this handler)
+     ===================================================================== */
+  var pendingPath = null;
+  launchBtn.addEventListener("click", function(){ pendingPath = "Interactive"; });
+  downloadBtn.addEventListener("click", function(){ pendingPath = "Blank PDF Download"; });
+
+  function setLeadFormBusy(busy){
+    launchBtn.disabled = busy;
+    downloadBtn.disabled = busy;
+  }
+
+  leadForm.addEventListener("submit", function(e){
+    e.preventDefault();
+    if(!pendingPath) pendingPath = "Interactive";
+    if(!validateLeadForm()) return;
+
+    var firstName = document.getElementById("lf-first-name").value.trim();
+    var workEmail = document.getElementById("lf-email").value.trim();
+
+    var attempt = pendingLeadAttempts[pendingPath];
+    if(!attempt){
+      attempt = {
+        submissionId: crypto.randomUUID(),
+        itemId: null,
+        firstName: firstName,
+        workEmail: workEmail,
+        testPath: pendingPath,
+        dateStarted: new Date().toISOString(),
+        attribution: attribution,
+        answers: {},
+        currentStep: 1,
+        completed: false
+      };
+      pendingLeadAttempts[pendingPath] = attempt;
+    } else {
+      attempt.firstName = firstName;
+      attempt.workEmail = workEmail;
+    }
+    // Persist the pending attempt (and its Submission ID) before the first
+    // POST goes out, so a refresh before/during a failed request restores
+    // the same attempt instead of starting a new one.
+    savePendingLeads();
+
+    setLeadFormBusy(true);
+    leadStatus.textContent = "Saving…";
+    leadStatus.className = "lead-status";
+
+    postToWorker({
+      kind: "lead",
+      submissionId: attempt.submissionId,
+      firstName: attempt.firstName,
+      workEmail: attempt.workEmail,
+      testPath: attempt.testPath,
+      dateStarted: attempt.dateStarted,
+      source: attempt.attribution.source,
+      utmSource: attempt.attribution.utmSource,
+      utmMedium: attempt.attribution.utmMedium,
+      utmCampaign: attempt.attribution.utmCampaign,
+      referringUrl: attempt.attribution.referringUrl
+    }).then(function(data){
+      attempt.itemId = String(data.itemId);
+      setLeadFormBusy(false);
+
+      if(attempt.testPath === "Interactive"){
+        leadStatus.textContent = "";
+        leadStatus.className = "lead-status";
+        currentAttempt = attempt;
+        saveAttempt(currentAttempt);
+        clearPendingLead("Interactive");
+        beginInteractiveTest();
+      } else {
+        leadStatus.textContent = "Your download is starting.";
+        leadStatus.className = "lead-status success";
+        triggerBlankPdfDownload();
+        clearPendingLead("Blank PDF Download");
+      }
+    }).catch(function(){
+      setLeadFormBusy(false);
+      leadStatus.textContent = "Your information could not be saved. Please try again.";
+      leadStatus.className = "lead-status error";
+    });
+  });
+
+  function triggerBlankPdfDownload(){
+    var link = document.createElement("a");
+    link.href = BLANK_PDF_PATH;
+    link.download = "5-Minute-Executive-Report-Test-Blank.pdf";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  /* =====================================================================
+     INTERACTIVE WIZARD
+     ===================================================================== */
+  function beginInteractiveTest(){
+    heroLeadArea.hidden = true;
+    testApp.hidden = false;
+    currentStep = 1;
+    currentAttempt.currentStep = 1;
+    renderStep();
+    testApp.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function resumeInteractiveTest(){
+    heroLeadArea.hidden = true;
+    testApp.hidden = false;
+    QUESTION_IDS.forEach(function(id){
+      var el = document.getElementById(id);
+      var value = currentAttempt.answers[id];
+      if(el && typeof value === "string") el.value = value;
+    });
+    currentStep = currentAttempt.currentStep || 1;
+    if(currentStep < 1) currentStep = 1;
+    if(currentStep > TOTAL_STEPS) currentStep = TOTAL_STEPS;
+    renderStep();
+  }
+
+  function renderStep(){
+    document.querySelectorAll(".test-step").forEach(function(stepEl){
+      var n = parseInt(stepEl.getAttribute("data-step"), 10);
+      stepEl.classList.toggle("active", n === currentStep);
+    });
+    progressFill.style.width = Math.round((currentStep / TOTAL_STEPS) * 100) + "%";
+    progressLabel.textContent = "Step " + currentStep + " of " + TOTAL_STEPS;
+    backBtn.disabled = (currentStep === 1);
+    nextBtn.hidden = (currentStep === TOTAL_STEPS);
+    finishBtn.hidden = (currentStep !== TOTAL_STEPS);
+    finishStatus.textContent = "";
+    finishStatus.className = "finish-status";
+
+    var activeStep = document.querySelector('.test-step[data-step="' + currentStep + '"]');
+    var firstField = activeStep ? activeStep.querySelector("textarea, input") : null;
+    if(firstField) firstField.focus();
+  }
+
+  function captureAnswersFromForm(){
+    QUESTION_IDS.forEach(function(id){
+      currentAttempt.answers[id] = val(id);
+    });
+  }
+
+  function persistProgress(){
+    captureAnswersFromForm();
+    currentAttempt.currentStep = currentStep;
+    saveAttempt(currentAttempt);
+  }
+
+  var saveTimer = null;
+  testForm.addEventListener("input", function(){
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(persistProgress, 300);
+  });
+
+  nextBtn.addEventListener("click", function(){
+    persistProgress();
+    if(currentStep < TOTAL_STEPS){
+      currentStep += 1;
+      renderStep();
+      persistProgress();
+    }
+  });
+  backBtn.addEventListener("click", function(){
+    persistProgress();
+    if(currentStep > 1){
+      currentStep -= 1;
+      renderStep();
+      persistProgress();
+    }
+  });
+
+  function setFinishBusy(busy){
+    finishBtn.disabled = busy;
+    backBtn.disabled = busy || currentStep === 1;
+  }
+
+  testForm.addEventListener("submit", function(e){
+    e.preventDefault();
+    persistProgress();
+    setFinishBusy(true);
+    finishStatus.textContent = "Saving…";
+    finishStatus.className = "finish-status";
+
+    postToWorker({
+      kind: "completed",
+      itemId: currentAttempt.itemId,
+      dateCompleted: new Date().toISOString(),
+      q1Receives: currentAttempt.answers.q1Receives || "",
+      q1Uses: currentAttempt.answers.q1Uses || "",
+      q2Purpose: currentAttempt.answers.q2Purpose || "",
+      q3Kpis: currentAttempt.answers.q3Kpis || "",
+      q4Influencing: currentAttempt.answers.q4Influencing || "",
+      q5Essential: currentAttempt.answers.q5Essential || "",
+      gapAudience: currentAttempt.answers.gapAudience || "",
+      gapPurpose: currentAttempt.answers.gapPurpose || "",
+      gapAttention: currentAttempt.answers.gapAttention || "",
+      oneThingToImprove: currentAttempt.answers.oneThingToImprove || ""
+    }).then(function(){
+      currentAttempt.completed = true;
+      saveAttempt(currentAttempt);
+      setFinishBusy(false);
+      showCompletionPanel();
+    }).catch(function(){
+      setFinishBusy(false);
+      finishStatus.textContent = "We could not save your completed test. Your answers are still here. Please try again.";
+      finishStatus.className = "finish-status error";
+    });
+  });
+
+  function showCompletionPanel(){
+    testApp.hidden = true;
+    completePanel.hidden = false;
+    completePanel.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  document.getElementById("btn-start-over").addEventListener("click", function(){
+    clearStoredAttempt();
+    clearAllPendingLeads();
+    currentAttempt = null;
+    currentStep = 1;
+    testForm.reset();
+    completePanel.hidden = true;
+    testApp.hidden = true;
+    heroLeadArea.hidden = false;
+    leadForm.reset();
+    leadStatus.textContent = "";
+    heroLeadArea.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+
+  /* =====================================================================
+     RESTORE ON LOAD
+     ===================================================================== */
+  (function restoreOnLoad(){
+    var stored = loadAttempt();
+    if(stored && stored.testPath === "Interactive" && stored.itemId){
+      currentAttempt = stored;
+      if(stored.completed){
+        heroLeadArea.hidden = true;
+        completePanel.hidden = false;
+      } else {
+        resumeInteractiveTest();
+      }
+      return;
+    }
+
+    // No confirmed attempt in progress — if a lead attempt was started but
+    // never got a successful response (e.g. the request failed and the
+    // visitor refreshed before retrying), restore its details into the
+    // lead form so retrying reuses the same Submission ID.
+    var pendingPaths = Object.keys(pendingLeadAttempts);
+    if(pendingPaths.length){
+      pendingPaths.sort(function(a, b){
+        return new Date(pendingLeadAttempts[b].dateStarted) - new Date(pendingLeadAttempts[a].dateStarted);
+      });
+      var latest = pendingLeadAttempts[pendingPaths[0]];
+      document.getElementById("lf-first-name").value = latest.firstName || "";
+      document.getElementById("lf-email").value = latest.workEmail || "";
+      // Restore the attempted path too, so retrying via Enter/submit (rather
+      // than re-clicking the specific button) retries the same path instead
+      // of silently defaulting to Interactive.
+      pendingPath = latest.testPath || "Interactive";
+    }
+  })();
+
+  /* =====================================================================
+     COMPLETED-TEST PDF (client-side, via jsPDF)
+     ===================================================================== */
+  var logoDataUrlPromise = null;
+  function getLogoDataUrl(){
+    if(logoDataUrlPromise) return logoDataUrlPromise;
+    logoDataUrlPromise = new Promise(function(resolve){
+      var img = new Image();
+      img.onload = function(){
+        try{
+          var canvas = document.createElement("canvas");
+          canvas.width = img.naturalWidth;
+          canvas.height = img.naturalHeight;
+          canvas.getContext("2d").drawImage(img, 0, 0);
+          resolve(canvas.toDataURL("image/jpeg", 0.92));
+        } catch(e){ resolve(null); }
+      };
+      img.onerror = function(){ resolve(null); };
+      img.src = LOGO_PATH;
+    });
+    return logoDataUrlPromise;
+  }
+
+  var PDF_QUESTIONS = [
+    { id: "q1Receives", label: "Who receives it?" },
+    { id: "q1Uses", label: "Who actively uses it in meetings or decisions?" },
+    { id: "q2Purpose", label: "What is this report supposed to help them understand or decide?" },
+    { id: "q3Kpis", label: "What KPIs or measures does the report contain?" },
+    { id: "q4Influencing", label: "Which KPIs actually influence a discussion, question, action, or decision?" },
+    { id: "q5Essential", label: "If you removed half the KPIs tomorrow, which would leadership ask you to restore?" },
+    { id: "gapAudience", label: "Audience Gap" },
+    { id: "gapPurpose", label: "Purpose Gap" },
+    { id: "gapAttention", label: "Attention Gap" },
+    { id: "oneThingToImprove", label: "If you could improve just one thing about this report, what would it be?" }
+  ];
+
+  document.getElementById("btn-download-completed").addEventListener("click", function(){
+    generateCompletedPdf();
+  });
+
+  function generateCompletedPdf(){
+    if(!currentAttempt || !window.jspdf || !window.jspdf.jsPDF){
+      alert("Sorry — the PDF could not be created. Please refresh the page and try again.");
+      return;
+    }
+    getLogoDataUrl().then(function(logoDataUrl){
+      var jsPDF = window.jspdf.jsPDF;
+      var doc = new jsPDF({ unit: "pt", format: "letter" });
+      var pageWidth = doc.internal.pageSize.getWidth();
+      var pageHeight = doc.internal.pageSize.getHeight();
+      var margin = 56;
+      var y = margin;
+
+      doc.setFillColor(10, 46, 138);
+      doc.rect(0, 0, pageWidth, 96, "F");
+      if(logoDataUrl){
+        var logoW = 150, logoH = logoW * (1230/3119);
+        doc.addImage(logoDataUrl, "JPEG", margin, (96 - logoH) / 2, logoW, logoH);
+      }
+      y = 96 + 40;
+
+      doc.setTextColor(23, 32, 47);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(19);
+      doc.text("The 5-Minute Executive Report Test™ — Completed", margin, y);
+      y += 22;
+
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(11);
+      doc.setTextColor(92, 105, 122);
+      var meta = (currentAttempt.firstName || "") + "  ·  Completed " + new Date().toLocaleDateString();
+      doc.text(meta, margin, y);
+      y += 30;
+
+      function ensureSpace(next){
+        if(y + next > pageHeight - margin){
+          doc.addPage();
+          y = margin;
+        }
+      }
+
+      function addQuestion(label, answer){
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(11.5);
+        doc.setTextColor(10, 46, 138);
+        var labelLines = doc.splitTextToSize(label, pageWidth - margin * 2);
+        ensureSpace(labelLines.length * 14 + 10);
+        doc.text(labelLines, margin, y);
+        y += labelLines.length * 14 + 6;
+
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(11.5);
+        doc.setTextColor(23, 32, 47);
+        var text = answer && answer.trim() ? answer.trim() : "(no answer provided)";
+        var lines = doc.splitTextToSize(text, pageWidth - margin * 2);
+        ensureSpace(lines.length * 14 + 22);
+        doc.text(lines, margin, y);
+        y += lines.length * 14 + 20;
+      }
+
+      PDF_QUESTIONS.forEach(function(q){
+        addQuestion(q.label, currentAttempt.answers[q.id]);
+      });
+
+      var pageCount = doc.internal.getNumberOfPages();
+      for(var p = 1; p <= pageCount; p++){
+        doc.setPage(p);
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(9.5);
+        doc.setTextColor(150, 158, 171);
+        doc.text("boardviewanalytics.com · The 5-Minute Executive Report Test™", margin, pageHeight - 28);
+        doc.text(String(p) + " / " + String(pageCount), pageWidth - margin, pageHeight - 28, { align: "right" });
+      }
+
+      doc.save("5-Minute-Executive-Report-Test-Completed.pdf");
+    });
+  }
+
+})();
+</script>
+
+</body>
+</html>
