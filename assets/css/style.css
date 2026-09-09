@@ -100,9 +100,14 @@ p.lede { font-size: 19px; color: var(--muted); max-width: 640px; }
 }
 .brand { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
 .brand img { height: 34px; width: auto; }
+/* The primary nav is the ONLY place the two header CTAs live — they are
+   the last two items in .nav-links, right after Contact. There is no
+   second copy anywhere in the header, so there is nothing left to
+   duplicate at any viewport width. */
+nav[aria-label="Primary"] { flex: 1; min-width: 0; }
 .nav-links {
   display: flex; gap: 22px; align-items: center; list-style: none;
-  margin: 0; padding: 0; flex: 1; justify-content: center;
+  margin: 0; padding: 0; justify-content: flex-end;
 }
 .nav-links a {
   color: var(--slate); font-weight: 600; font-size: 15px;
@@ -111,15 +116,25 @@ p.lede { font-size: 19px; color: var(--muted); max-width: 640px; }
 .nav-links a:hover, .nav-links a[aria-current="page"] {
   color: var(--blue); text-decoration: none; border-bottom-color: var(--blue);
 }
-.header-cta { flex-shrink: 0; display: flex; align-items: center; gap: 10px; }
-/* The two nav CTAs are duplicated as list items so they appear inside the
-   existing mobile dropdown; they stay hidden in the desktop link row since
-   the header-cta pair already shows them there. */
-.nav-links li.nav-cta-item { display: none; }
 .nav-links li.nav-cta-item a {
-  padding: 10px 20px; border-bottom: none; display: inline-block;
+  padding: 10px 20px; border-bottom: none; display: inline-block; white-space: nowrap;
 }
 .nav-links li.nav-cta-item a:hover { border-bottom: none; }
+/* Start a Conversation gets extra horizontal room so the label doesn't
+   feel cramped; height stays identical to the primary CTA (same vertical
+   padding, same border width). */
+.nav-links li.nav-cta-item a.btn-secondary { padding: 10px 28px; }
+/* Guarantee white text on the primary CTA in every state — generic
+   .nav-links a rules (and their :hover/[aria-current] color) must never
+   win here. */
+.nav-links li.nav-cta-item a.btn-primary,
+.nav-links li.nav-cta-item a.btn-primary:link,
+.nav-links li.nav-cta-item a.btn-primary:visited,
+.nav-links li.nav-cta-item a.btn-primary:hover,
+.nav-links li.nav-cta-item a.btn-primary:active,
+.nav-links li.nav-cta-item a.btn-primary:focus {
+  color: var(--white);
+}
 .nav-toggle {
   display: none; background: none; border: 1px solid var(--line); border-radius: 10px;
   width: 42px; height: 38px; cursor: pointer; flex-shrink: 0;
@@ -218,6 +233,11 @@ ul.plain.muted li { color: var(--muted); }
 }
 .contact-card .btn-primary { font-size: 17px; padding: 16px 34px; }
 .expect-list { text-align: left; max-width: 560px; margin: 40px auto 0; }
+/* Tighten the gap between the contact-page intro and the "Book a time to
+   talk" card that follows it (roughly a 40-45% cut to the combined hero +
+   section gap). Scoped to this one section via its own class so .hero and
+   the shared section.tight rule — used elsewhere — are untouched. */
+section.tight.contact-book-gap { padding-top: 6px; }
 
 /* ---------- responsive ---------- */
 @media (max-width: 900px) {
@@ -232,17 +252,17 @@ ul.plain.muted li { color: var(--muted); }
 @media (max-width: 1040px) {
   .nav-links { display: none; }
   .nav-toggle { display: block; }
-  .header-cta { display: none; }
   .site-header.open .nav-links {
     display: flex; position: absolute; top: 100%; left: 0; right: 0;
     background: var(--white); border-bottom: 1px solid var(--line);
     flex-direction: column; padding: 18px 28px; gap: 16px;
   }
-  .nav-links li.nav-cta-item { display: block; width: 100%; margin-top: 4px; }
+  .nav-links li.nav-cta-item { width: 100%; margin-top: 4px; }
   .nav-links li.nav-cta-item a { display: block; text-align: center; }
 }
 @media (max-width: 760px) {
   section { padding: 54px 0; }
   .hero { padding: 44px 0 40px; }
   .site-footer .wrap { flex-direction: column; align-items: flex-start; }
+  section.tight.contact-book-gap { padding-top: 10px; }
 }
