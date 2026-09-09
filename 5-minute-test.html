@@ -39,11 +39,14 @@
   .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:14px 32px;max-width:1160px;margin:0 auto;flex-wrap:wrap;gap:12px;}
   .logo-wrap{display:flex;align-items:center;gap:10px;text-decoration:none;cursor:pointer;}
   .logo-wrap img{height:44px;width:auto;display:block;}
-  nav.links{display:flex;align-items:center;gap:28px;flex-wrap:wrap;}
+  nav.links{display:flex;align-items:center;gap:22px;flex-wrap:wrap;}
   nav.links a{font-size:14.5px;font-weight:600;color:var(--slate);opacity:0.82;transition:opacity .15s ease;}
   nav.links a:hover{opacity:1;color:var(--blue);}
-  .nav-cta{background:var(--blue);color:var(--white) !important;padding:10px 20px;border-radius:8px;font-weight:600;font-size:14px;opacity:1 !important;transition:background .15s ease;}
-  .nav-cta:hover{background:var(--blue-deep);}
+  .nav-cta{padding:9px 18px;border-radius:8px;font-weight:600;font-size:14px;opacity:1 !important;white-space:nowrap;transition:background .15s ease, border-color .15s ease;}
+  .nav-cta-primary{background:var(--blue);color:var(--white) !important;border:1px solid var(--blue);}
+  .nav-cta-primary:hover{background:var(--blue-deep);}
+  .nav-cta-secondary{background:var(--white);color:var(--blue) !important;border:1px solid var(--line);}
+  .nav-cta-secondary:hover{border-color:var(--blue);}
 
   /* ---------- BUTTONS ---------- */
   .btn{display:inline-flex;align-items:center;justify-content:center;padding:14px 26px;border-radius:8px;font-weight:600;font-size:15px;cursor:pointer;border:1px solid transparent;transition:all .15s ease;text-align:center;}
@@ -143,6 +146,11 @@
 
   .visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;}
 
+  /* .btn sets its own `display`, which otherwise beats the browser's
+     default [hidden]{display:none} rule at equal specificity — that let
+     Next/Finish (and Back) render even while hidden was set. Force it. */
+  [hidden]{display:none !important;}
+
   /* ---------- RESPONSIVE ---------- */
   @media (max-width:900px){
     .hero-grid{grid-template-columns:1fr;}
@@ -170,7 +178,8 @@
       <a href="approach.html">Approach</a>
       <a href="about.html">About</a>
       <a href="contact.html">Contact</a>
-      <a href="contact.html" class="nav-cta">Start a Conversation</a>
+      <a href="5-minute-test.html" class="nav-cta nav-cta-primary">Take the 5-Minute Report Test</a>
+      <a href="contact.html" class="nav-cta nav-cta-secondary">Start a Conversation</a>
     </nav>
   </div>
 </header>
@@ -189,7 +198,7 @@
         <h3>How It Works</h3>
         <div class="how-step"><span class="num">1</span><p>Answer a few quick questions about one report you already produce.</p></div>
         <div class="how-step"><span class="num">2</span><p>Notice where what the report contains and how leadership actually uses it may not line up.</p></div>
-        <div class="how-step"><span class="num">3</span><p>Walk away with your own completed copy — nothing is scored or graded.</p></div>
+        <div class="how-step"><span class="num">3</span><p>Walk away with a completed copy that captures what you noticed and where your report may deserve a closer look.</p></div>
       </div>
     </div>
 
@@ -210,7 +219,7 @@
 
         <div class="lead-ctas">
           <button type="submit" class="btn btn-primary" id="btn-launch">Launch the 5-Minute Executive Report Test&#8482;</button>
-          <button type="submit" class="btn btn-secondary" id="btn-download">Download the blank test and fill it offline</button>
+          <button type="submit" class="btn btn-secondary" id="btn-download">Download the test template and fill it offline</button>
         </div>
 
         <p class="privacy-note">We&rsquo;ll use your information to provide the test and communicate with you about Boardview Analytics.</p>
@@ -353,7 +362,7 @@
       <span class="eyebrow">Questions?</span>
       <h2>Talk to Boardview Analytics about your reporting</h2>
       <p class="lede">Reach out any time at support@boardviewanalytics.com, or start a conversation below.</p>
-      <a href="contact.html" class="btn btn-primary">Get in Touch</a>
+      <a href="mailto:support@boardviewanalytics.com?subject=5-Minute%20Executive%20Report%20Test" class="btn btn-primary">Email Boardview Analytics</a>
     </div>
   </div>
 </section>
@@ -372,10 +381,11 @@
      CONFIG
      ===================================================================== */
   var WORKER_URL = "https://boardview-5-minute-test.shami-d27.workers.dev/";
-  var BLANK_PDF_PATH = "5-minute-executive-report-test-blank.pdf";
+  var TEMPLATE_PDF_PATH = "Boardview_5_Minute_Executive_Report_Test_Template.pdf";
   var LOGO_PATH = "assets/img/logo.png";
   var STORAGE_KEY = "bva5minTest_attempt_v1";
   var PENDING_LEAD_KEY = "bva5minTest_pendingLead_v1";
+  var IDENTITY_KEY = "bva5minTest_identity_v1";
   var TOTAL_STEPS = 7;
   var QUESTION_IDS = ["q1Receives","q1Uses","q2Purpose","q3Kpis","q4Influencing",
     "q5Essential","gapAudience","gapPurpose","gapAttention","oneThingToImprove"];
@@ -409,6 +419,19 @@
   }
   function clearStoredAttempt(){
     try{ localStorage.removeItem(STORAGE_KEY); } catch(e){}
+  }
+
+  // Visitor identity (First Name / Work Email) persists separately from any
+  // one test attempt, so "Start a New Test" can prefill the launch gate
+  // without reusing the prior attempt's Submission ID or SharePoint item.
+  function loadIdentity(){
+    try{
+      var raw = localStorage.getItem(IDENTITY_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch(e){ return null; }
+  }
+  function saveIdentity(identity){
+    try{ localStorage.setItem(IDENTITY_KEY, JSON.stringify(identity)); } catch(e){}
   }
 
   function loadPendingLeads(){
@@ -580,7 +603,7 @@
       } else {
         leadStatus.textContent = "Your download is starting.";
         leadStatus.className = "lead-status success";
-        triggerBlankPdfDownload();
+        triggerTemplatePdfDownload();
         clearPendingLead("Blank PDF Download");
       }
     }).catch(function(){
@@ -590,10 +613,10 @@
     });
   });
 
-  function triggerBlankPdfDownload(){
+  function triggerTemplatePdfDownload(){
     var link = document.createElement("a");
-    link.href = BLANK_PDF_PATH;
-    link.download = "5-Minute-Executive-Report-Test-Blank.pdf";
+    link.href = TEMPLATE_PDF_PATH;
+    link.download = "5-Minute-Executive-Report-Test-Template.pdf";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -632,7 +655,10 @@
     });
     progressFill.style.width = Math.round((currentStep / TOTAL_STEPS) * 100) + "%";
     progressLabel.textContent = "Step " + currentStep + " of " + TOTAL_STEPS;
-    backBtn.disabled = (currentStep === 1);
+    // Explicitly control which of Back/Next/Finish exist on screen for this
+    // step, rather than just disabling them — see the [hidden] rule above.
+    backBtn.hidden = (currentStep === 1);
+    backBtn.disabled = false;
     nextBtn.hidden = (currentStep === TOTAL_STEPS);
     finishBtn.hidden = (currentStep !== TOTAL_STEPS);
     finishStatus.textContent = "";
@@ -707,6 +733,7 @@
     }).then(function(){
       currentAttempt.completed = true;
       saveAttempt(currentAttempt);
+      saveIdentity({ firstName: currentAttempt.firstName, workEmail: currentAttempt.workEmail });
       setFinishBusy(false);
       showCompletionPanel();
     }).catch(function(){
@@ -733,6 +760,14 @@
     heroLeadArea.hidden = false;
     leadForm.reset();
     leadStatus.textContent = "";
+    // Prepopulate (but don't lock) name/email from the retained identity —
+    // this is display-only; the actual new attempt/Submission ID is only
+    // created when the visitor launches the new test below.
+    var identity = loadIdentity();
+    if(identity){
+      document.getElementById("lf-first-name").value = identity.firstName || "";
+      document.getElementById("lf-email").value = identity.workEmail || "";
+    }
     heroLeadArea.scrollIntoView({ behavior: "smooth", block: "start" });
   });
 
@@ -768,6 +803,16 @@
       // than re-clicking the specific button) retries the same path instead
       // of silently defaulting to Interactive.
       pendingPath = latest.testPath || "Interactive";
+    } else {
+      // No in-progress or pending attempt at all — if this browser has a
+      // retained identity from a previous completed test, prefill the
+      // launch gate with it (still editable, still requires an explicit
+      // launch to create any new attempt).
+      var identity = loadIdentity();
+      if(identity){
+        document.getElementById("lf-first-name").value = identity.firstName || "";
+        document.getElementById("lf-email").value = identity.workEmail || "";
+      }
     }
   })();
 
@@ -822,58 +867,159 @@
       var pageWidth = doc.internal.pageSize.getWidth();
       var pageHeight = doc.internal.pageSize.getHeight();
       var margin = 56;
+      var lineH = 14;
+      var usableHeight = pageHeight - margin * 2;
       var y = margin;
+      var pageCenter = pageWidth / 2;
 
-      doc.setFillColor(10, 46, 138);
-      doc.rect(0, 0, pageWidth, 96, "F");
+      // ---- Page 1 header: clean white page, centered logo/title/meta ----
       if(logoDataUrl){
-        var logoW = 150, logoH = logoW * (1230/3119);
-        doc.addImage(logoDataUrl, "JPEG", margin, (96 - logoH) / 2, logoW, logoH);
+        var logoW = 165, logoH = logoW * (1230 / 3119);
+        doc.addImage(logoDataUrl, "JPEG", pageCenter - logoW / 2, y, logoW, logoH);
+        y += logoH + 26;
+      } else {
+        y += 10;
       }
-      y = 96 + 40;
+
+      doc.setTextColor(10, 46, 138);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(18);
+      doc.text("The 5-Minute Executive Report Test™", pageCenter, y, { align: "center" });
+      y += 22;
 
       doc.setTextColor(23, 32, 47);
       doc.setFont("helvetica", "bold");
-      doc.setFontSize(19);
-      doc.text("The 5-Minute Executive Report Test™ — Completed", margin, y);
-      y += 22;
+      doc.setFontSize(14);
+      doc.text("Completed Copy", pageCenter, y, { align: "center" });
+      y += 24;
 
       doc.setFont("helvetica", "normal");
       doc.setFontSize(11);
       doc.setTextColor(92, 105, 122);
       var meta = (currentAttempt.firstName || "") + "  ·  Completed " + new Date().toLocaleDateString();
-      doc.text(meta, margin, y);
+      doc.text(meta, pageCenter, y, { align: "center" });
+      y += 22;
+
+      doc.setDrawColor(217, 226, 238);
+      doc.setLineWidth(1);
+      doc.line(margin, y, pageWidth - margin, y);
       y += 30;
 
-      function ensureSpace(next){
-        if(y + next > pageHeight - margin){
-          doc.addPage();
-          y = margin;
-        }
-      }
-
+      // ---- Q&A content, with orphan-heading control ----
       function addQuestion(label, answer){
         doc.setFont("helvetica", "bold");
         doc.setFontSize(11.5);
-        doc.setTextColor(10, 46, 138);
         var labelLines = doc.splitTextToSize(label, pageWidth - margin * 2);
-        ensureSpace(labelLines.length * 14 + 10);
+        var labelH = labelLines.length * lineH + 6;
+
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(11.5);
+        var text = answer && answer.trim() ? answer.trim() : "(no answer provided)";
+        var lines = doc.splitTextToSize(text, pageWidth - margin * 2);
+        var answerBottomPad = 20;
+        var fullBlockH = labelH + lines.length * lineH + answerBottomPad;
+        var remaining = pageHeight - margin - y;
+
+        if(fullBlockH <= usableHeight){
+          // The whole question-and-answer block fits on one page — if it
+          // doesn't fit in what's left here, move it wholesale rather than
+          // stranding the heading.
+          if(remaining < fullBlockH){
+            doc.addPage();
+            y = margin;
+          }
+        } else if(remaining < labelH + lineH){
+          // Answer is too long to keep on one page regardless — at minimum
+          // don't start the heading with none of the answer beneath it.
+          doc.addPage();
+          y = margin;
+        }
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(11.5);
+        doc.setTextColor(10, 46, 138);
         doc.text(labelLines, margin, y);
-        y += labelLines.length * 14 + 6;
+        y += labelH;
 
         doc.setFont("helvetica", "normal");
         doc.setFontSize(11.5);
         doc.setTextColor(23, 32, 47);
-        var text = answer && answer.trim() ? answer.trim() : "(no answer provided)";
-        var lines = doc.splitTextToSize(text, pageWidth - margin * 2);
-        ensureSpace(lines.length * 14 + 22);
-        doc.text(lines, margin, y);
-        y += lines.length * 14 + 20;
+        lines.forEach(function(line){
+          if(y + lineH > pageHeight - margin){
+            doc.addPage();
+            y = margin;
+          }
+          doc.text(line, margin, y);
+          y += lineH;
+        });
+        y += answerBottomPad;
       }
 
       PDF_QUESTIONS.forEach(function(q){
         addQuestion(q.label, currentAttempt.answers[q.id]);
       });
+
+      // ---- "Want to go deeper?" next-step section ----
+      (function addNextStepCta(){
+        var ctaTitle = "Want to go deeper?";
+        var ctaHeading = "The 30-Minute Test";
+        var ctaBody = "A paid, self-guided assessment that takes the next step by examining how a report performs in an actual leadership meeting across five dimensions: Purpose, Trust, Focus, Context, and Decision Readiness.";
+        var ctaLinkText = "Interested? Contact Boardview Analytics →";
+        var contentWidth = pageWidth - margin * 2;
+
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(11.5);
+        var bodyLines = doc.splitTextToSize(ctaBody, contentWidth);
+
+        // Fixed, short copy — it always fits a single page, so just make
+        // sure it doesn't get split awkwardly across a page break.
+        var blockH = 26 /*divider spacing*/ + 20 /*eyebrow*/ + 20 /*heading*/ +
+          bodyLines.length * lineH + 6 + 20 /*link*/;
+        if((pageHeight - margin - y) < blockH){
+          doc.addPage();
+          y = margin;
+        }
+
+        doc.setDrawColor(217, 226, 238);
+        doc.setLineWidth(1);
+        doc.line(margin, y, pageWidth - margin, y);
+        y += 26;
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(10.5);
+        doc.setTextColor(92, 105, 122);
+        doc.text(ctaTitle.toUpperCase(), margin, y);
+        y += 20;
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(15);
+        doc.setTextColor(10, 46, 138);
+        doc.text(ctaHeading, margin, y);
+        y += 20;
+
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(11.5);
+        doc.setTextColor(23, 32, 47);
+        bodyLines.forEach(function(line){
+          if(y + lineH > pageHeight - margin){
+            doc.addPage();
+            y = margin;
+          }
+          doc.text(line, margin, y);
+          y += lineH;
+        });
+        y += 6;
+
+        if(y + 16 > pageHeight - margin){
+          doc.addPage();
+          y = margin;
+        }
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(11.5);
+        doc.setTextColor(10, 46, 138);
+        doc.textWithLink(ctaLinkText, margin, y, { url: "mailto:support@boardviewanalytics.com" });
+        y += 20;
+      })();
 
       var pageCount = doc.internal.getNumberOfPages();
       for(var p = 1; p <= pageCount; p++){
